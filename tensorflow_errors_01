@@ -1,0 +1,7 @@
+org.tensorflow.exceptions.TensorFlowException: Converting GraphDef to Graph has failed with an error: 'Op type not registered 'CaseFoldUTF8' in binary running on DEVM40. Make sure the Op and Kernel are registered in the binary running in this process. Note that if you are loading a saved graph which used ops from tf.contrib, accessing (e.g.) `tf.contrib.resampler` should be done before importing the graph, as contrib ops are lazily registered when the module is first accessed.' The binary trying to import the GraphDef was built when GraphDef version was 898. The GraphDef was produced by a binary built when GraphDef version was 1087. The difference between these versions is larger than TensorFlow's forward compatibility guarantee, and might be the root cause for failing to import the GraphDef.
+
+
+
+
+OOM when allocating tensor with shape[768,3072] and type float on /job:localhost/replica:0/task:0/device:CPU:0 by allocator cpu
+	 [[{{function_node __inference__traced_restore_80364}}{{node RestoreV2}}]]
