@@ -16,3 +16,87 @@ const handleShowIndexedFiles = async () => {
         console.log(showIndexedFile);
         setSelectedCollectionIndexFiles(indexFiles, collectionName);
     }
+
+
+return (
+        <>
+            <div
+            >
+                <div className={`flex flex-grow flex-col gap-2 theme-${currentTheme}`}>
+                    <label className="manual-mantine-label text-sm">Select Collection: </label>
+                    <Select
+                        data={collectionList}
+                        // value={currentCollection}
+                        maxDropdownHeight={180}
+                        onChange={setCollectionName}
+                        onFocus={getCollectionList}
+                    />
+
+                    {collectionName && <button
+                        className="button-core flex items-center justify-center"
+                        onClick={handleShowIndexedFiles}
+                        disabled={processing}
+                        style={{
+                            opacity: processing ? 0.5 : 1,
+                            transition: 'opacity 0.3s ease-in-out'
+                        }}
+                    >
+                        {processing ? (
+                            <div className="items-center justify-center gap-1">
+                                <span>Loading...</span>
+                            </div>
+                        ) : (
+                            <div className="items-center justify-center gap-1">
+                                Show Sources from Collection
+                            </div>
+                        )}
+                    </button>
+                    }
+
+                    {showIndexedFile &&
+                        <Modal
+                            opened={opened}
+                            onClose={close}
+                            key={"global-settings-modal"}
+                            // title="Settings"
+                            // scrollAreaComponent={ScrollArea.Autosize}
+                            centered
+                            classNames={ModalClasses}
+                            withCloseButton={false}
+                            size="auto"
+                            overlayProps={ModalOverlayProps}
+                        >
+                            <div className={`flex flex-col justify-between rounded-lg theme-${currentTheme}`}>
+                                <div className="flex justify-between bg-primary p-3 text-brand">
+                                    <span className="text-lg font-semibold">Manage Collection</span>
+                                    <button className="p-1" onClick={close}>
+                                        <TbX size="1rem"/>
+                                    </button>
+                                </div>
+                                <div className={`flex flex-grow flex-col gap-2 bg-gray-100 p-5 theme-${currentTheme}`}>
+                                    {/*<Select
+                                    label="Theme:"
+                                    data={[
+                                        "oceanblue",
+                                        "purple",
+                                        "riptide",
+                                        "goldsand",
+                                        "tonyspink",
+                                        "cornflower",
+                                        "mantis",
+                                        "contessa",
+                                        "bostonblue",
+                                        "logan",
+                                    ]}
+                                    value={currentTheme}
+                                    classNames={SelectInputClasses}
+                                    maxDropdownHeight={180}
+                                    onChange={setCurrentTheme}
+                                />*/}
+                                </div>
+                            </div>
+                        </Modal>
+                    }
+                </div>
+            </div>
+        </>
