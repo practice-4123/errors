@@ -2,3 +2,17 @@ Spring security filter chain
   https://www.javadevjournal.com/spring-security/spring-security-filters/
 Spring boot add multiple filter chain
   https://www.yawintutor.com/how-to-add-multiple-filters-in-spring-boot/
+
+
+const handleShowIndexedFiles = async () => {
+        const resValue: string[] = [];
+        setInProgress(true);
+        const fileList = await fetch(`http://aiws1:8081/chatbot/showsources?collection_name=${collectionName}`, {method: "POST"})
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        fileList.json().then(value => {setIndexFiles(value)})
+        setInProgress(false);
+        setShowIndexedFile(true);
+        console.log(showIndexedFile);
+        setSelectedCollectionIndexFiles(indexFiles, collectionName);
+    }
