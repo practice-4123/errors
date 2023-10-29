@@ -1,0 +1,100 @@
+import React, {useEffect, useState} from "react";
+
+import {useCustomTheme} from "@/Store/GlobalStore";
+import {CustomThemeType} from "@/types/globalTypes";
+
+import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
+
+
+/*const FileListOverflow = {
+    max-height: 400px;
+    overflow-y: scroll;
+};*/
+
+const FileViewerModel = ({indexFiles}) => {
+    const [currentTheme] = useCustomTheme((state: CustomThemeType) => [
+        state.currentTheme,
+        state.setCurrentTheme,
+    ]);
+
+    const [getFile, setFile] = useState<string>();
+    const [isFileView, setIsFileView] = useState<boolean>(false);
+
+    const fileChanged = async (ev: React.MouseEvent<HTMLButtonElement>, file: string) => {
+        ev.preventDefault();
+        setIsFileView((file === getFile) ? false : true);
+        setFile(file);
+        console.log(file);
+    };
+
+    const renderFileViewer = (getFile: string | undefined) => {
+        return (
+            (getFile && isFileView) ?
+                <>
+                    <div  className={"relative flex w-50 flex-grow"}>
+                        <DocViewer style={{ width: 500, height: 500 }} pluginRenderers={DocViewerRenderers}
+                                   documents={[{uri: getFileAbsoluteName(getFile as string), fileType: getFileExtension(getFile)}]} />
+                    </div>
+                </>
+            : null
+        )
+    }
+
+    return (
+        <>
+            <div
+            >
+                <div className={`flex theme-${currentTheme}`}>
+                    <div style={{ width: 500, height: 500, overflow: "scroll", maxHeight: 500 }} className="flex-50">
+                        <table
+                            className="table-auto border-collapse border border-gray-400 rounded-lg px-3 py-1 dark:border-white w-full">
+                            <tbody>
+                            {(indexFiles?.length > 0) &&
+                                // (!inProgress || !isLast) &&
+                                indexFiles?.map((file, idx) => (
+                                    <tr key={idx} className="button-core">
+                                        <td className="break-words border border-gray-600 px-3 py-1 dark:border-white">
+                                            {idx + 1}
+                                        </td>
+                                        <td className="break-words border border-gray-600 px-3 py-1 dark:border-white">
+                                            <button
+                                                /*target="popup"
+                                                rel="noreferrer"*/
+                                                onClick={(e) => fileChanged(e, file)}
+                                            >
+                                                {getFileName(file)}
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                    {
+                        renderFileViewer(getFile)
+                    }
+                </div>
+            </div>
+        </>
+    );
+};
+
+const getFileName = (file: string) => {
+    return file.substring(file.lastIndexOf("\\") + 1)
+}
+
+const getFileExtension = (file: string) => {
+    /*console.log(file);*/
+    return file.substring(file.lastIndexOf(".") + 1).toLowerCase();
+}
+
+const getFileAbsoluteName = (file: string) => {
+    /*console.log(file);*/
+    const originalAbsoluteFile = file.substring(file.indexOf("\\\\") + 1);
+    return file.split("/\\\\")[0] + "//" + originalAbsoluteFile.replaceAll("\\", "/");
+}
+
+
+export default FileViewerModel;
+
+
